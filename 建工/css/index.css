@@ -1,0 +1,23 @@
+.tips_box {
+  position: fixed;
+  bottom: 100px;
+  right: 0;
+  border: 2px solid #f00;
+  height: 100px;
+  width: 100px;
+  transform: translateX(50%);
+  transition: all 0.3s linear;
+}
+.tips_box:hover {
+  transform: translateX(0%);
+}
+.chat_box {
+  position: fixed;
+  bottom: 100px;
+  right: 0;
+  border: 2px solid #f00;
+  height: 300px;
+  width: 250px;
+  transition: all 0.3s linear;
+  background-color: #fff;
+}

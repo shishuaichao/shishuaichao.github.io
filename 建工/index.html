@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>录入专利组件</title>
+    <link rel="stylesheet" type="text/css" href="./css/viewuiplus.css">
+    <script type="text/javascript" src="./js/vue.js"></script>
+    <script type="text/javascript" src="./js/viewui.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+<div id="app">
+  <!-- 提示按钮 -->
+  <div class="tips_box" @click="showChat"></div>  
+	<i-button type="primary" @click="modal = true">Display dialog box</i-button>
+  <!-- 对话框 -->
+	<!-- <transition name="slide-up">
+		<div class="chat_box transition-box" v-show="isChatShow">
+			<div>
+				<Icon type="ios-close" size="28" color="red" @click="hideChat" />
+				
+			</div>
+		</div>
+	</transition> -->
+  
+
+	</div>
+  <!-- 上传框 -->
+  <!-- 列表框 -->
+  
+  <i-modal
+    v-model="isChatShow" 
+    title="Welcome"
+    :mask-closable="false"
+    :footer-hide="true"
+    :draggable="true"
+		:sticky="true"
+  >
+    Welcome to View UI Plus
+  </i-modal>
+</div>
+<script>
+	const app = Vue.createApp({
+		data() {
+			return {
+				isChatShow: false,
+				visible: false
+			}
+		},
+		mounted() {
+			
+		},
+		methods: {
+			showUpload() {
+				this.visible = true;
+			},
+			showChat() {
+				this.isChatShow = true;
+			},
+			hideChat() {
+				this.isChatShow = false;
+			},
+		}
+	});
+	app.use(ViewUIPlus);
+	app.mount("#app");
+</script>
+</body>
+</html>
