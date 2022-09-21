@@ -1,3 +1,6 @@
+* {
+  user-select: none;
+}
 body {
   position: fixed;
   /* border: 1px solid #f00; */
@@ -203,4 +206,16 @@ body {
 .load_box .load_text {
   position: relative;
   z-index: 11;
+}
+.footer a:active {
+  transform: scale(1.1);
+  outline: none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+.open_game {
+  font-size: 40px;
+  position: absolute;
+  top: 30%;
+  width: 100%;
+  text-align: center;
 }

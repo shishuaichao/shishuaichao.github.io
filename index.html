@@ -50,17 +50,25 @@
     </div>
     <!-- 进度页面 -->
     <div class="loading_mask" v-if="isLoading">
-      <div class="load_tips">加载中。。。</div>
-      <div class="load_box">
+      <div class="load_tips" v-if="loadPercent < 99">加载中。。。</div>
+      <div class="load_box" v-if="loadPercent < 99">
         <div class="load" :style="{'width': loadPercent + '%'}"></div>
         <div class="load_text">{{loadPercent}}%</div>
       </div>
+      <div @click="openGame" v-if="loadPercent == 100" class="open_game animate__animated animate__fadeInUp">打开游戏</div>
     </div>
     <div class="footer">
-      <div class="item red" @click="handle(1)"></div>
-      <div class="item green" @click="handle(2)"></div>
-      <div class="item blue" @click="handle(3)"></div>
+      <a href="javascript:void(0);"><div class="item red" @click="handle(1)"></div></a>
+      <a href="javascript:void(0);"><div class="item green" @click="handle(2)"></div></a>
+      <a href="javascript:void(0);"><div class="item blue" @click="handle(3)"></div></a>
     </div>
+
+    <!-- 背景音乐 -->
+    <audio ref="bgAudio" loop src="./music/bg.mp3"></audio>
+    <!-- 得分 -->
+    <audio ref="getAudio" src="./music/get.mp3"></audio>
+    <!-- 失分 -->
+    <audio ref="lostAudio" src="./music/lost.mp3"></audio>
   </div>
 </body>
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10"></script> -->
@@ -104,10 +112,13 @@
           if (this.loadPercent < num) {
             if (this.loadPercent++ == 99) {
               clearInterval(this.loadT)
-              this.isLoading = false
             }
           }
         }, 10);
+      },
+      openGame() {
+        this.isLoading = false
+        this.$refs.bgAudio.play()
       },
       format(time) {
         return time/100
@@ -143,6 +154,7 @@
       },
       // 减分
       reduceScore() {
+        this.scorePlay('lostAudio')
         this.scoreReduceTips = '-100'
         const el = this.$refs.scoreTipsReduce.classList
         this.scoreShowHide(el)
@@ -153,10 +165,17 @@
       },
       // 得分
       addScore() {
+        this.scorePlay('getAudio')
         this.scoreAddTips = '+100'
         this.score += 100
         const el = this.$refs.scoreTipsAdd.classList
         this.scoreShowHide(el)
+      },
+      scorePlay(type) {
+        this.$refs.getAudio.pause()
+        this.$refs.lostAudio.pause()
+        this.$refs[type].currentTime = 0
+        this.$refs[type].play()
       },
       scoreShowHide(el) {
         el.remove('animate__fadeInUp')
