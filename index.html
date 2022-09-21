@@ -13,7 +13,6 @@
 </head>
 <body>
   <div id="app">
-    
     <h3 class="header">
       <div style="width: 200px">
         倒计时：
@@ -35,6 +34,7 @@
       <button class="btn" @click="resetHandle">重置</button>
       <button class="btn" @click="setTime">设置时间</button>
     </div>
+    <!-- 结束提示框 -->
     <div class="result_box_mask" v-if="!timer">
       <div class="result_box">
         <h2>
@@ -46,6 +46,14 @@
           <button @click="beginHandle">重新开始</button>
           <button @click="resetHandle">关闭</button>
         </div>
+      </div>
+    </div>
+    <!-- 进度页面 -->
+    <div class="loading_mask" v-if="isLoading">
+      <div class="load_tips">加载中。。。</div>
+      <div class="load_box">
+        <div class="load" :style="{'width': loadPercent + '%'}"></div>
+        <div class="load_text">{{loadPercent}}%</div>
       </div>
     </div>
     <div class="footer">
@@ -61,21 +69,46 @@
   let app = new Vue({
     el: '#app',
     data: {
+      isLoading: true,   // 加载资源
+      loadPercent: 0,   // 加载进度
+      loadT: null,
       isPause: false,  // 暂停
       isBegin: false,
       t: null,
-      time: 10000,   // 100s
+      time: 3000,   // 30s
       timer: 0,
       score: 0,
       list: [],
       scoreAddTips: '',
       scoreReduceTips: '',
     },
+    created() {
+      const that = this
+      document.onreadystatechange = () => {
+        console.log('进度', document.readyState)
+        if (document.readyState === "interactive") {
+          this.showLoading(50)
+        }
+        if (document.readyState === "complete") {
+          this.showLoading(100)
+        }
+      }
+    },
     mounted() {
       this.reset()
       this.animateReset()
     },
     methods: {
+      showLoading(num) {
+        this.loadT = setInterval(() => {
+          if (this.loadPercent < num) {
+            if (this.loadPercent++ == 99) {
+              clearInterval(this.loadT)
+              this.isLoading = false
+            }
+          }
+        }, 10);
+      },
       format(time) {
         return time/100
       },

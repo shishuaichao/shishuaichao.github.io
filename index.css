@@ -156,3 +156,49 @@ body {
   outline: none;
   border-color: rgb(162, 104, 239);
 }
+.loading_mask {
+  position: fixed;
+  z-index: 101;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: pink;
+  color: #fff;
+}
+.load_tips {
+  position: absolute;
+  height: 30px;
+  width: 80%;
+  bottom: 350px;
+  left: 10%;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 20px;
+}
+.load_box {
+  position: absolute;
+  height: 30px;
+  width: 80%;
+  bottom: 300px;
+  left: 10%;
+  background-color: #f0c9f3;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 30px;
+  overflow: hidden;
+}
+.load_box .load {
+  background-color: rgb(162, 104, 239);
+  /* width: 50%; */
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+.load_box .load_text {
+  position: relative;
+  z-index: 11;
+}
