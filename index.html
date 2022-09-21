@@ -184,14 +184,15 @@
         this.addAvatar()
       },
       animateReset() {
-        this.$refs.tips.classList.remove('animate__zoomOut')
-        this.$refs.tips.classList.add('animate__zoomIn')
+        const el = this.$refs.tips.classList
+        el.remove('animate__zoomOut')
+        el.add('animate__zoomIn')
         setTimeout(() => {
-          this.$refs.tips.classList.remove('animate__zoomIn')
-          this.$refs.tips.classList.add('animate__bounce')
+          el.remove('animate__zoomIn')
+          el.add('animate__bounce')
         }, 1000);
         setTimeout(() => {
-          this.$refs.tips.classList.add('animate__zoomOut')
+          el.add('animate__zoomOut')
         }, 3000);
       },
       
