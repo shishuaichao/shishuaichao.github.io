@@ -214,8 +214,9 @@ body {
 }
 .open_game {
   font-size: 40px;
-  position: absolute;
+  position: fixed;
   top: 30%;
   width: 100%;
   text-align: center;
+  z-index: 102;
 }
