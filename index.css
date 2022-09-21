@@ -113,7 +113,7 @@ body {
   z-index: 2;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.12);
 }
 .result_box {
   box-sizing: border-box;
