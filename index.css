@@ -78,6 +78,7 @@ body {
   color: rgb(162, 104, 239);
   outline: none;
   border-color: rgb(162, 104, 239);
+  border-radius: 16px;
 }
 .header {
   display: flex;
@@ -155,6 +156,7 @@ body {
   color: rgb(162, 104, 239);
   outline: none;
   border-color: rgb(162, 104, 239);
+  border-radius: 16px;
 }
 .loading_mask {
   position: fixed;
