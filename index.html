@@ -104,7 +104,7 @@
       position: fixed;
       width: 100%;
       left: 0;
-      top: 550px;
+      top: 480px;
       text-align: center;
     }
     .add {
@@ -139,6 +139,7 @@
       <button class="btn" @click="resetHandle">重置</button>
       <button class="btn" @click="setTime">设置时间</button>
     </div>
+    
     <div class="footer">
       <div class="item red" @click="handle(1)"></div>
       <div class="item green" @click="handle(2)"></div>
@@ -164,6 +165,7 @@
     },
     mounted() {
       this.reset()
+      this.animateReset()
     },
     methods: {
       format(num) {
