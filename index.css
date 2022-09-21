@@ -32,13 +32,13 @@ body {
 }
 
 .red {
-  background-image: url(./1.jpg);
+  background-image: url(./imgs/1.jpg);
 }
 .green {
-  background-image: url(./2.jpg);
+  background-image: url(./imgs/2.jpg);
 }
 .blue{
-  background-image: url(./3.jpg);
+  background-image: url(./imgs/3.jpg);
 }
 #app {
 
@@ -78,16 +78,16 @@ body {
   height: 40px;
   width: 80px;
   background-color: pink;
-  color: rgb(162, 104, 239);
+  color: #a268ef;
   outline: none;
-  border-color: rgb(162, 104, 239);
+  border-color: #a268ef;
   border-radius: 16px;
 }
 .header {
   display: flex;
   justify-content: space-between;
   padding: 0 40px;
-  color: rgb(162, 104, 239);
+  color: #a268ef;
 }
 .tips {
   position: fixed;
@@ -95,7 +95,7 @@ body {
   left: 0;
   top: 500px;
   text-align: center;
-  color: rgb(162, 104, 239);
+  color: #a268ef;
 }
 .score_tips {
   position: fixed;
@@ -128,14 +128,14 @@ body {
   text-align: center;
   border: 1px solid #ccc;
   background-color: #fff;
-  box-shadow: 0 0 20px 1px rgb(162, 104, 239);
+  box-shadow: 0 0 20px 1px #a268ef;
   border-radius: 20px;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 .result_box h1 {
-  color: rgb(162, 104, 239);
+  color: #a268ef;
 }
 .result_box h2 {
   color: #ccc;
@@ -145,7 +145,7 @@ body {
   justify-content: space-around;
 }
 .result_box h2 span {
-  color: rgb(162, 104, 239);
+  color: #a268ef;
 }
 .result_box .btn_box {
   display: flex;
@@ -156,9 +156,9 @@ body {
   height: 40px;
   width: 80px;
   background-color: pink;
-  color: rgb(162, 104, 239);
+  color: #a268ef;
   outline: none;
-  border-color: rgb(162, 104, 239);
+  border-color: #a268ef;
   border-radius: 16px;
 }
 .loading_mask {
@@ -195,7 +195,7 @@ body {
   overflow: hidden;
 }
 .load_box .load {
-  background-color: rgb(162, 104, 239);
+  background-color: #a268ef;
   /* width: 50%; */
   position: absolute;
   height: 100%;
@@ -216,7 +216,39 @@ body {
   font-size: 40px;
   position: fixed;
   top: 30%;
-  width: 100%;
+  width: 80%;
+  left: 10%;
+  box-sizing: border-box;
   text-align: center;
   z-index: 102;
+  border: 2px solid #fff;
+  border-radius: 20px;
+}
+.bgm_box {
+  position: fixed;
+  right: 40px;
+  top: 60px;
+}
+.bgm_box .bgm {
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1px solid #a268ef;
+  padding: 4px;
+}
+.bgm_box .bgm img {
+  display: block;
+  width: 100%;
+}
+.spin {
+  animation: spin 2s infinite linear;
+}
+@keyframes spin {
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(450deg);
+  }
 }

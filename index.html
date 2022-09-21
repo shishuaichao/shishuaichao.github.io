@@ -13,6 +13,7 @@
 </head>
 <body>
   <div id="app">
+    <!-- 得分倒计时 -->
     <h3 class="header">
       <div style="width: 200px">
         倒计时：
@@ -20,6 +21,14 @@
       </div>
       <div class="score">得分: {{score}}</div>
     </h3>
+    <!-- 背景音乐 -->
+    <div class="bgm_box">
+      <div class="bgm" @click="switchBGM">
+        <img class="spin" v-if="showBGM" src="./imgs/music.png" alt="">
+        <img v-else src="./imgs/music_mute.png" alt="">
+      </div>
+    </div>
+    <!-- 展示列表 -->
     <div class="list_box">
       <div class="list">
         <div class="item" v-for="(item, key) in list" :key="key" :class="{red: item == 1, green: item == 2, blue: item == 3}"></div>
@@ -28,6 +37,7 @@
       <h1 ref="scoreTipsAdd" class="score_tips add animate__animated">{{scoreAddTips}}</h1>
       <h1 ref="scoreTipsReduce" class="score_tips reduce animate__animated animate__fadeOutUp">{{scoreReduceTips}}</h1>
     </div>
+    <!-- 底部开关按钮 -->
     <div class="setting">
       <button class="btn" @click="pauseHandle">暂停</button>
       <button class="btn" @click="beginHandle">{{isPause ? '继续' : '开始'}}</button>
@@ -57,6 +67,7 @@
       </div>
       <div @click="openGame" v-show="loadPercent == 100" class="open_game animate__animated animate__fadeInUp">点我打开游戏</div>
     </div>
+    <!-- 操作按钮 -->
     <div class="footer">
       <a href="javascript:void(0);"><div class="item red" @click="handle(1)"></div></a>
       <a href="javascript:void(0);"><div class="item green" @click="handle(2)"></div></a>
@@ -64,7 +75,7 @@
     </div>
 
     <!-- 背景音乐 -->
-    <audio ref="bgAudio" loop src="./music/bg.mp3"></audio>
+    <audio ref="bgmAudio" loop src="./music/bg.mp3"></audio>
     <!-- 得分 -->
     <audio ref="getAudio" src="./music/get.mp3"></audio>
     <!-- 失分 -->
@@ -77,6 +88,7 @@
   let app = new Vue({
     el: '#app',
     data: {
+      showBGM: true,   //bgm
       isLoading: true,   // 加载资源
       loadPercent: 0,   // 加载进度
       loadT: null,
@@ -107,6 +119,14 @@
       this.animateReset()
     },
     methods: {
+      switchBGM() {
+        this.showBGM = !this.showBGM;
+        if (this.showBGM) {
+          this.$refs.bgmAudio.play()
+        } else {
+          this.$refs.bgmAudio.pause()
+        }
+      },
       showLoading(num) {
         this.loadT = setInterval(() => {
           if (this.loadPercent < num) {
@@ -118,7 +138,7 @@
       },
       openGame() {
         this.isLoading = false
-        this.$refs.bgAudio.play()
+        this.$refs.bgmAudio.play()
       },
       format(time) {
         return time/100
@@ -220,7 +240,6 @@
       },
       resetHandle() {
         this.reset()
-        this.animateReset()
       },
       addAvatar() {
         if(this.list.length < 10) {
@@ -245,7 +264,7 @@
         }, 1000);
         setTimeout(() => {
           el.add('animate__zoomOut')
-        }, 3000);
+        }, 5000);
       },
       
       setTime() {
