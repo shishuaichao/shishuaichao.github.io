@@ -130,8 +130,8 @@
         <div class="item" v-for="(item, key) in list" :key="key" :class="{red: item == 1, green: item == 2, blue: item == 3}"></div>
       </div>
       <h3 ref="tips" class="tips animate__animated animate__zoomIn">⬆︎⬆︎选择列表中最下面的头像⬆︎⬆︎</h3>
-      <h1 ref="scoreTipsAdd" class="score_tips add animate__animated" v-show="scoreAddTips">{{scoreAddTips}}</h1>
-      <h1 ref="scoreTipsReduce" class="score_tips reduce animate__animated animate__fadeOutUp" v-show="scoreReduceTips">{{scoreReduceTips}}</h1>
+      <h1 ref="scoreTipsAdd" class="score_tips add animate__animated">{{scoreAddTips}}</h1>
+      <h1 ref="scoreTipsReduce" class="score_tips reduce animate__animated animate__fadeOutUp">{{scoreReduceTips}}</h1>
     </div>
     <div class="setting">
       <button class="btn" @click="pauseHandle">暂停</button>
