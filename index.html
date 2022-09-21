@@ -130,8 +130,8 @@
         <div class="item" v-for="(item, key) in list" :key="key" :class="{red: item == 1, green: item == 2, blue: item == 3}"></div>
       </div>
       <h3 ref="tips" class="tips animate__animated animate__zoomIn">⬆︎⬆︎选择列表中最下面的头像⬆︎⬆︎</h3>
-      <h1 ref="scoreTipsAdd" class="score_tips add animate__animated" v-show="scoreTips">{{scoreTips}}</h1>
-      <h1 ref="scoreTipsReduce" class="score_tips reduce animate__animated animate__fadeOutUp" v-show="scoreTips">{{scoreTips}}</h1>
+      <h1 ref="scoreTipsAdd" class="score_tips add animate__animated" v-show="scoreAddTips">{{scoreTips}}</h1>
+      <h1 ref="scoreTipsReduce" class="score_tips reduce animate__animated animate__fadeOutUp" v-show="scoreReduceTips">{{scoreTips}}</h1>
     </div>
     <div class="setting">
       <button class="btn" @click="pauseHandle">暂停</button>
@@ -188,7 +188,7 @@
       },
       // 减分
       reduceScore() {
-        this.scoreTips = '-100'
+        this.scoreReduceTips = '-100'
         const el = this.$refs.scoreTipsReduce.classList
         this.scoreShowHide(el)
         this.score -= 100
@@ -198,7 +198,7 @@
       },
       // 得分
       addScore() {
-        this.scoreTips = '+100'
+        this.scoreAddTips = '+100'
         this.score += 100
         const el = this.$refs.scoreTipsAdd.classList
         this.scoreShowHide(el)
