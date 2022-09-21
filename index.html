@@ -231,12 +231,14 @@
           return
         }
         if (this.isPause) {
+          // 继续
           this.isPause = false
-          this.timerDown()
         } else {
+          // 开始
           this.init()
           this.isBegin = true
         }
+        this.timerDown()
       },
       pauseHandle() {
         this.isPause = true
