@@ -250,11 +250,13 @@ body {
 .open_game img {
   display: block;
   width: 100%;
+  transition: all 200ms;
 }
 .open_game a:active img {
   display: block;
   width: 100%;
-  transform: scale(1.05);
+  transform: scale(2);
+  opacity: 0.2;
 }
 .bgm_box {
   position: fixed;
