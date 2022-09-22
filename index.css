@@ -177,7 +177,7 @@ body {
   position: absolute;
   height: 30px;
   width: 100px;
-  bottom: 300px;
+  bottom: 230px;
   left: calc(50% - 50px);
   border-radius: 20px;
   text-align: center;
@@ -207,7 +207,7 @@ body {
   position: absolute;
   height: 30px;
   width: 80%;
-  bottom: 250px;
+  bottom: 180px;
   left: 10%;
   background-color: #f8f8f8;
   border-radius: 20px;
