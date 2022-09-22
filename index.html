@@ -150,12 +150,12 @@
         setTimeout(() => {
           that.$refs.readyBegin1.classList.add('animate__zoomOut')
           that.$refs.readyBeginGo.style.display = 'block'
-          that.$refs.readyBeginGo.classList.add('animate__bounceIn')
+          that.$refs.readyBeginGo.classList.add('animate__bounceIn animate_faster')
           // 这里开始
         }, 3000);
         setTimeout(() => {
           that.$refs.readyBeginGo.classList.add('animate__bounceOut')
-        }, 3700);
+        }, 3500);
       },
       switchBGM() {
         this.showBGM = !this.showBGM;
