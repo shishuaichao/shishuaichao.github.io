@@ -68,11 +68,11 @@
       <div @click="openGame" v-show="loadPercent == 100" class="open_game animate__animated animate__fadeInUp">点我打开游戏</div>
     </div>
     <!-- 倒计时 -->
-    <div class="ready_to_begin">
-      <img ref="readyBegin3" class="animate__animated" src="./gameSource/img_2.png" alt="">
-      <img ref="readyBegin2" class="animate__animated" src="./gameSource/img_1.png" alt="">
-      <img ref="readyBegin1" class="animate__animated" src="./gameSource/img_0.png" alt="">
-      <img ref="readyBeginGo" class="animate__animated" src="./gameSource/img_3.png" alt="">
+    <div class="ready_to_begin" ref="readyBeginBox">
+      <img ref="readyBegin3" class="animate__animated animate__faster" src="./gameSource/img_2.png" alt="">
+      <img ref="readyBegin2" class="animate__animated animate__faster" src="./gameSource/img_1.png" alt="">
+      <img ref="readyBegin1" class="animate__animated animate__faster" src="./gameSource/img_0.png" alt="">
+      <img ref="readyBeginGo" class="animate__animated animate__faster" src="./gameSource/img_3.png" alt="">
     </div>
     <!-- 操作按钮 -->
     <div class="footer">
@@ -130,32 +130,51 @@
     mounted() {
       this.reset()
       this.animateReset()
-      this.openReadyBegin()
     },
     methods: {
       openReadyBegin() {
         const that = this
-        that.$refs.readyBegin3.style.display = 'block'
-        that.$refs.readyBegin3.classList.add('animate__zoomIn')
-        setTimeout(() => {
-          that.$refs.readyBegin3.classList.add('animate__zoomOut')
-          that.$refs.readyBegin2.style.display = 'block'
-          that.$refs.readyBegin2.classList.add('animate__zoomIn')
+        let num3 = that.$refs.readyBegin3
+        let num2 = that.$refs.readyBegin2
+        let num1 = that.$refs.readyBegin1
+        let go = that.$refs.readyBeginGo
+        num3.style.display = 'block'
+        num3.classList.remove('animate__zoomOut')
+        num3.classList.add('animate__zoomIn')
+        let t1 = setTimeout(() => {
+          num3.classList.remove('animate__zoomIn')
+          num3.classList.add('animate__zoomOut')
+          num2.style.display = 'block'
+          num2.classList.remove('animate__zoomOut')
+          num2.classList.add('animate__zoomIn')
+          clearTimeout(t1)
+        }, 500);
+        let t2 = setTimeout(() => {
+          num2.classList.remove('animate__zoomIn')
+          num2.classList.add('animate__zoomOut')
+          num1.style.display = 'block'
+          num1.classList.remove('animate__zoomOut')
+          num1.classList.add('animate__zoomIn')
+          clearTimeout(t2)
         }, 1000);
-        setTimeout(() => {
-          that.$refs.readyBegin2.classList.add('animate__zoomOut')
-          that.$refs.readyBegin1.style.display = 'block'
-          that.$refs.readyBegin1.classList.add('animate__zoomIn')
+        let t3 = setTimeout(() => {
+          num1.classList.remove('animate__zoomIn')
+          num1.classList.add('animate__zoomOut')
+          go.style.display = 'block'
+          go.classList.remove('animate__bounceOut')
+          go.classList.add('animate__bounceIn')
+          clearTimeout(t3)
+        }, 1500);
+        let t4 = setTimeout(() => {
+          go.classList.remove('animate__bounceIn')
+          go.classList.add('animate__bounceOut')
+          clearTimeout(t4)
         }, 2000);
-        setTimeout(() => {
-          that.$refs.readyBegin1.classList.add('animate__zoomOut')
-          that.$refs.readyBeginGo.style.display = 'block'
-          that.$refs.readyBeginGo.classList.add('animate__bounceIn animate_faster')
+        let t5 = setTimeout(() => {
           // 这里开始
-        }, 3000);
-        setTimeout(() => {
-          that.$refs.readyBeginGo.classList.add('animate__bounceOut')
-        }, 3500);
+          that.isBegin = true
+          that.timerDown()
+        }, 2500);
       },
       switchBGM() {
         this.showBGM = !this.showBGM;
@@ -265,12 +284,12 @@
         if (this.isPause) {
           // 继续
           this.isPause = false
+          this.timerDown()
         } else {
           // 开始
           this.init()
-          this.isBegin = true
+          this.openReadyBegin()
         }
-        this.timerDown()
       },
       pauseHandle() {
         this.isPause = true

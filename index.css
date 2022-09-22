@@ -246,10 +246,10 @@ body {
 }
 @keyframes spin {
   from {
-    transform: rotate(90deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: rotate(450deg);
+    transform: rotate(360deg);
   }
 }
 .ready_to_begin {
@@ -258,11 +258,17 @@ body {
   text-align: center;
   top: 10%;
   width: 100%;
+  border: 1px solid #ccc;
+  
 }
 .ready_to_begin img {
-  width: 100%;
+  width: 70%;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 20%;
+  left: 15%;
   display: none;
+}
+.ready_to_begin img:nth-last-child(1) {
+  width: 90%;
+  left: 5%;
 }
