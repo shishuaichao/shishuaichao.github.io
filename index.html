@@ -67,6 +67,13 @@
       </div>
       <div @click="openGame" v-show="loadPercent == 100" class="open_game animate__animated animate__fadeInUp">点我打开游戏</div>
     </div>
+    <!-- 倒计时 -->
+    <div class="ready_to_begin">
+      <img ref="readyBegin3" class="animate__animated" src="./gameSource/img_2.png" alt="">
+      <img ref="readyBegin2" class="animate__animated" src="./gameSource/img_1.png" alt="">
+      <img ref="readyBegin1" class="animate__animated" src="./gameSource/img_0.png" alt="">
+      <img ref="readyBeginGo" class="animate__animated" src="./gameSource/img_3.png" alt="">
+    </div>
     <!-- 操作按钮 -->
     <div class="footer">
       <a href="javascript:void(0);"><div class="item red" @click="handle(1)"></div></a>
@@ -101,6 +108,7 @@
       list: [],
       scoreAddTips: '',
       scoreReduceTips: '',
+      readyBegin: null,
     },
     created() {
       const that = this
@@ -113,12 +121,42 @@
           this.showLoading(100)
         }
       }
+      // this.readyBegin = 3
+      // setInterval(() => {
+      //   this.readyBegin = 2
+      // }, 1000);
+      
     },
     mounted() {
       this.reset()
       this.animateReset()
+      this.openReadyBegin()
     },
     methods: {
+      openReadyBegin() {
+        const that = this
+        that.$refs.readyBegin3.style.display = 'block'
+        that.$refs.readyBegin3.classList.add('animate__zoomIn')
+        setTimeout(() => {
+          that.$refs.readyBegin3.classList.add('animate__zoomOut')
+          that.$refs.readyBegin2.style.display = 'block'
+          that.$refs.readyBegin2.classList.add('animate__zoomIn')
+        }, 1000);
+        setTimeout(() => {
+          that.$refs.readyBegin2.classList.add('animate__zoomOut')
+          that.$refs.readyBegin1.style.display = 'block'
+          that.$refs.readyBegin1.classList.add('animate__zoomIn')
+        }, 2000);
+        setTimeout(() => {
+          that.$refs.readyBegin1.classList.add('animate__zoomOut')
+          that.$refs.readyBeginGo.style.display = 'block'
+          that.$refs.readyBeginGo.classList.add('animate__bounceIn')
+          // 这里开始
+        }, 3000);
+        setTimeout(() => {
+          that.$refs.readyBeginGo.classList.add('animate__bounceOut')
+        }, 3700);
+      },
       switchBGM() {
         this.showBGM = !this.showBGM;
         if (this.showBGM) {

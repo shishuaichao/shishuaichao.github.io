@@ -252,3 +252,18 @@ body {
     transform: rotate(450deg);
   }
 }
+
+.ready_to_begin {
+  position: fixed;
+  z-index: 150;
+  text-align: center;
+  top: 10%;
+  width: 100%;
+}
+.ready_to_begin img {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
