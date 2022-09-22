@@ -168,36 +168,56 @@ body {
   height: 100vh;
   top: 0;
   left: 0;
-  background-image: url('./gameSource/bg_lang.jpg');
-  background-size: 100%;
-  background-position: 0% 35%;
-  color: #a268ef;
+  background-image: url('./gameSource/bg.png');
+  background-size: auto 100%;
+  background-position: center;
+  color: #2a84fcb5;
 }
 .load_tips {
   position: absolute;
   height: 30px;
-  width: 80%;
-  bottom: 350px;
-  left: 10%;
+  width: 100px;
+  bottom: 300px;
+  left: calc(50% - 50px);
   border-radius: 20px;
   text-align: center;
   line-height: 30px;
   font-size: 20px;
 }
+@keyframes loading {
+  from {
+    width: 60px;
+  }
+  50% {
+    width: 90px;
+  }
+  to {
+    width: 110px;
+  }
+}
+.load_tips_animate {
+  text-align: left;
+  animation: loading 500ms infinite linear;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100px;
+}
 .load_box {
   position: absolute;
   height: 30px;
   width: 80%;
-  bottom: 300px;
+  bottom: 250px;
   left: 10%;
-  background-color: #f0c9f3;
+  background-color: #f8f8f8;
   border-radius: 20px;
   text-align: center;
   line-height: 30px;
   overflow: hidden;
+  opacity: .5;
 }
 .load_box .load {
-  background-color: #a268ef;
+  background-color: #2a84fcb5;
   /* width: 50%; */
   position: absolute;
   height: 100%;
@@ -218,7 +238,7 @@ body {
 .open_game {
   font-size: 40px;
   position: fixed;
-  top: 40%;
+  top: 30%;
   width: 80%;
   left: 10%;
   box-sizing: border-box;
@@ -279,3 +299,4 @@ body {
   width: 90%;
   left: 5%;
 }
+

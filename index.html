@@ -60,8 +60,11 @@
     </div>
     <!-- 进度页面 -->
     <div class="loading_mask" v-if="isLoading">
-      <div class="load_tips" v-if="loadPercent < 99">加载中。。。</div>
-      <div class="load_box" v-if="loadPercent < 99">
+      <div class="load_tips" v-if="loadPercent == 100">加载完成</div>
+      <div class="load_tips" v-else>
+        <div class="load_tips_animate">加载中. . .</div>
+      </div>
+      <div class="load_box">
         <div class="load" :style="{'width': loadPercent + '%'}"></div>
         <div class="load_text">{{loadPercent}}%</div>
       </div>
@@ -193,7 +196,7 @@
               clearInterval(this.loadT)
             }
           }
-        }, 10);
+        }, 5);
       },
       openGame() {
         this.isLoading = false
