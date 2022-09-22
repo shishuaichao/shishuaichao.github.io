@@ -168,8 +168,10 @@ body {
   height: 100vh;
   top: 0;
   left: 0;
-  background-color: pink;
-  color: #fff;
+  background-image: url('./gameSource/bg_lang.jpg');
+  background-size: 100%;
+  background-position: 0% 35%;
+  color: #a268ef;
 }
 .load_tips {
   position: absolute;
@@ -206,6 +208,7 @@ body {
 .load_box .load_text {
   position: relative;
   z-index: 11;
+  color: #fff;
 }
 .footer a:active {
   transform: scale(1.1);
@@ -215,7 +218,7 @@ body {
 .open_game {
   font-size: 40px;
   position: fixed;
-  top: 30%;
+  top: 40%;
   width: 80%;
   left: 10%;
   box-sizing: border-box;
@@ -223,6 +226,10 @@ body {
   z-index: 102;
   border: 2px solid #fff;
   border-radius: 20px;
+}
+.open_game img {
+  display: block;
+  width: 100%;
 }
 .bgm_box {
   position: fixed;

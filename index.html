@@ -65,7 +65,9 @@
         <div class="load" :style="{'width': loadPercent + '%'}"></div>
         <div class="load_text">{{loadPercent}}%</div>
       </div>
-      <div @click="openGame" v-show="loadPercent == 100" class="open_game animate__animated animate__fadeInUp">点我打开游戏</div>
+      <div @click="openGame" v-show="loadPercent == 100" class="open_game animate__animated animate__fadeInUp">
+        <img src="./gameSource/begin_btn.png" alt="">
+      </div>
     </div>
     <!-- 倒计时 -->
     <div class="ready_to_begin" ref="readyBeginBox">
