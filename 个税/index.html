@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个税</title>
+  <style>
+    #app {
+      font-size: 20px;
+      padding: 30px 100px;
+    }
+    label {
+      cursor: pointer;
+    }
+    input[type='checkbox'] {
+      cursor: pointer;
+      width: 30px;
+      height: 20px;
+    }
+    button {
+      width: 200px;
+      height: 50px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 22px;
+    }
+    .form {
+      line-height: 2em;
+    } 
+    .form input[type='number'] {
+      width: 100px;
+      height: 30px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>个税计算器</h1>
+    <div class="form">
+      <div>基础薪资：<input type="number" v-model="baseSalary"></div>
+      <!-- <div>起征点点：<input type="number" v-model="beginPoint" disabled></div> -->
+      <div>五险一金：<input type="number" v-model="socialInsurance"></div>
+      <div><label for="3">租&nbsp;&nbsp;房&nbsp;&nbsp;抵&nbsp;&nbsp;扣：</label><input id="3"  type="checkbox" v-model="houseRent"></div>
+      <div><label for="4">抚养小孩抵扣：</label><input id="4" type="checkbox" v-model="childrenDeduction"></div>
+      <div><label for="5">赡养老人抵扣：</label><input id="5"  type="checkbox" v-model="parentDeduction"></div>
+      <div><label for="6">继续教育抵扣：</label><input id="6"  type="checkbox" v-model="adultEducation"></div>
+      <div>
+        <label for="00">一月工资：</label> <input id="00"  type="number" v-model="salaryArr[0]"> &nbsp;
+        <label for="01">二月工资：</label> <input id="01"  type="number" v-model="salaryArr[1]"> &nbsp;
+        <label for="02">三月工资：</label> <input id="02"  type="number" v-model="salaryArr[2]"> &nbsp;
+        <br>
+        <label for="03">四月工资：</label> <input id="03"  type="number" v-model="salaryArr[3]"> &nbsp;
+        <label for="04">五月工资：</label> <input id="04"  type="number" v-model="salaryArr[4]"> &nbsp;
+        <label for="05">六月工资：</label> <input id="05"  type="number" v-model="salaryArr[5]"> &nbsp;
+        <br>
+        <label for="06">七月工资：</label> <input id="06"  type="number" v-model="salaryArr[6]"> &nbsp;
+        <label for="07">八月工资：</label> <input id="07"  type="number" v-model="salaryArr[7]"> &nbsp;
+        <label for="08">九月工资：</label> <input id="08"  type="number" v-model="salaryArr[8]"> &nbsp;
+        <br>
+        <label for="09">十月工资：</label> <input id="09"  type="number" v-model="salaryArr[9]"> &nbsp;
+        <label for="10">11&nbsp;月工资：</label> <input id="10"  type="number" v-model="salaryArr[10]"> &nbsp;
+        <label for="11">12月工资：</label> <input id="11"  type="number" v-model="salaryArr[11]"> &nbsp;
+      </div>
+      <br>
+      <div>计算前几个月：<input type="number" v-model="currentMonth"></div>
+      <button @click="calc">计  算</button>
+    </div>
+    <hr>
+    <div v-html="resultStr"></div>
+  </div>
+</body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+
+  const { createApp, ref, onMounted, watch } = Vue
+
+  createApp({
+    setup() {
+      const baseSalary = ref(5000)   // 基础工资
+      const beginPoint = ref(5000)  // 起征点
+
+      const socialInsurance = ref(1000)  // 五险一金
+      const houseRent = ref(true)   // 租房
+      const houseRentLimit = ref(1500)   // 租房抵扣
+      const childrenDeduction = ref(false)  // 小孩
+      const childrenDeductionLimit = ref(1000)  // 小孩抵扣
+      const parentDeduction = ref(false)  // 老人
+      const parentDeductionLimit = ref(3000)  // 老人抵扣
+      const adultEducation = ref(false)  // 继续教育
+      const adultEducationLimit = ref(400)  // 继续教育抵扣
+
+      const level1 = 36000
+      const level1Rate = 0.03
+      const level1TaxAll = level1 * level1Rate
+      const level2 = 144000
+      const level2Rate = 0.1
+      const level2TaxAll = level1TaxAll + (level2 - level1) * level2Rate
+      const level3 = 300000
+      const level3Rate = 0.2
+      const level3TaxAll = level2TaxAll + (level3 - level2) * level3Rate
+      const level4 = 420000
+      const level4Rate = 0.25
+      const level4TaxAll = level3TaxAll + (level4 - level3) * level4Rate
+      const level5 = 660000
+      const level5Rate = 0.3
+      const level5TaxAll = level4TaxAll + (level5 - level4) * level5Rate
+      const resultStr = ref('')
+
+      const salaryArr = ref([])
+      const initSalary = () => {
+        console.log('xxxxx')
+        for(let i=0; i<12; i++) {
+          salaryArr.value[i] = baseSalary.value
+        }
+      }
+
+      watch(baseSalary, e => {
+        initSalary()
+      })
+      
+
+      const taxPaid = ref(0)
+      const calcTax = (sumNum, salary) => {
+        let tax = 0
+        if (sumNum <= beginPoint.value) {
+          tax = 0
+        } else if (sumNum <= level1) {
+          tax = sumNum * level1Rate - taxPaid.value
+        } else if (sumNum <= level2) {
+          tax = (sumNum - level1) * level2Rate - taxPaid.value + level1TaxAll
+        } else if (sumNum <= level3) {
+          tax = (sumNum - level2) * level3Rate - taxPaid.value + level2TaxAll
+        } else if (sumNum <= level4) {
+          tax = (sumNum - level3) * level4Rate - taxPaid.value + level3TaxAll
+        } else if (sumNum <= level5) {
+          tax = (sumNum - level4) * level5Rate - taxPaid.value + level4TaxAll
+        }
+        taxPaid.value += tax
+        resultStr.value += ` <span style="color: green">税后：${(salary - socialInsurance.value - tax).toFixed(2)}</span>  <span style="color: blue">应纳税：${tax}</span><br>`
+      }
+      
+      // 计算
+      const calcSumTaxAmount = (num) => {
+        if (num > 12) {
+          num = 12
+        }
+        resultStr.value = ''
+        taxPaid.value = 0
+        let sumTaxAmount = 0
+        for(let i = 0; i < num; i++) {
+          let currentMonthSalary = salaryArr.value[i] || baseSalary.value
+          let taxAmount = currentMonthSalary - socialInsurance.value
+                                            - beginPoint.value
+                                            - (houseRent.value ? houseRentLimit.value : 0)
+                                            - (childrenDeduction.value ? childrenDeductionLimit.value : 0)
+                                            - (parentDeduction.value ? parentDeductionLimit.value : 0)
+                                            - (adultEducation.value ? adultEducationLimit.value : 0)
+          if (taxAmount <= 0) {
+            taxAmount = 0
+          }
+          sumTaxAmount += taxAmount
+          resultStr.value += `第${i+1}个月 累计应纳税所得额：${sumTaxAmount} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
+          calcTax(sumTaxAmount, currentMonthSalary)
+        }
+        resultStr.value += `总纳税额：${taxPaid.value}`
+      }
+
+      const currentMonth = ref(12)
+      const calc = () => {
+        calcSumTaxAmount(currentMonth.value)
+      }
+
+      onMounted(() => {
+        initSalary()
+      })
+      
+      return {
+        baseSalary,
+        beginPoint,
+        socialInsurance,
+        houseRent,
+        childrenDeduction,
+        parentDeduction,
+        resultStr,
+        currentMonth,
+        salaryArr,
+        calc,
+      }
+    }
+  }).mount('#app')
+  
+</script>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="UTF-8">
+    <title>K线图中的十字线跟随底部</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <style>
+        #main {
+            height: 100%;
+        }
+    </style>
+</head>
+<body style="height: 100%; margin: 0">
+    <div id="main"></div>
+    <script type="text/javascript">
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            xAxis: {
+                type: 'category',
+                data: ['2022/1/24', '2022/1/25', '2022/1/26', '2022/1/27', '2022/1/28', '2022/1/29', '2022/1/30']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                type: 'candlestick',
+                data: [
+                    [2320.26, 2320.26, 2287.3, 2362.94],
+                    [2300, 2291.3, 2288.26, 2308.38],
+                    [2295.35, 2346.5, 2295.35, 2346.92],
+                    [2347.22, 2358.98, 2337.35, 2363.8],
+                    [2360.75, 2382.48, 2347.89, 2383.76],
+                    [2383.43, 2385.42, 2371.23, 2391.82],
+                    [2377.41, 2419.02, 2369.57, 2421.15]
+                ]
+            }],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                },
+                formatter: function (params) {
+                    var date = params[0].name;
+                    var data = params[0].data;
+                    return '日期: ' + date + '<br/>开盘: ' + data[0] + '<br/>收盘: ' + data[1];
+                }
+            }
+        };
+
+        myChart.setOption(option);
+
+        myChart.getZr().on('mousemove', function (params) {
+            var pointInPixel = [params.offsetX, params.offsetY];
+            if (myChart.containPixel('grid', pointInPixel)) {
+                var pointInGrid = myChart.convertFromPixel({seriesIndex: 0}, pointInPixel);
+                var dataIndex = Math.round(pointInGrid[0]);
+                var data = option.series[0].data[dataIndex];
+                if (data) {
+                    var yValue = data[2]; // 使用最低价（即K线的底部）作为y轴值
+                    var yAxisPixel = myChart.convertToPixel({yAxisIndex: 0}, yValue);
+
+                    myChart.setOption({
+                        axisPointer: {
+                            value: option.xAxis.data[dataIndex],
+                            status: 'show'
+                        },
+                        graphic: {
+                            elements: [
+                                {
+                                    id: 'horizontalLine',
+                                    type: 'line',
+                                    left: 0,
+                                    shape: { x1: 0, y1: yAxisPixel, x2: chartDom.clientWidth, y2: yAxisPixel },
+                                    style: {
+                                        stroke: '#555',
+                                        lineWidth: 1
+                                    }
+                                }
+                            ]
+                        }
+                    });
+                }
+            }
+        });
+
+        myChart.getZr().on('mouseout', function () {
+            myChart.setOption({
+                graphic: {
+                    elements: []
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

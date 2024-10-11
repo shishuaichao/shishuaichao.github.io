@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="UTF-8">
+    <title>点击出现和关闭 tooltip 线</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <style>
+        #main {
+            height: 100%;
+        }
+    </style>
+</head>
+<body style="height: 100%; margin: 0">
+    <div id="main"></div>
+    <script type="text/javascript">
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            xAxis: {
+                type: 'category',
+                data: ['2022/1/24', '2022/1/25', '2022/1/26', '2022/1/27', '2022/1/28', '2022/1/29', '2022/1/30']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                type: 'candlestick',
+                data: [
+                    [2320.26, 2320.26, 2287.3, 2362.94],
+                    [2300, 2291.3, 2288.26, 2308.38],
+                    [2295.35, 2346.5, 2295.35, 2346.92],
+                    [2347.22, 2358.98, 2337.35, 2363.8],
+                    [2360.75, 2382.48, 2347.89, 2383.76],
+                    [2383.43, 2385.42, 2371.23, 2391.82],
+                    [2377.41, 2419.02, 2369.57, 2421.15]
+                ]
+            }],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            }
+        };
+
+        myChart.setOption(option);
+
+        var tooltipVisible = false;
+
+        myChart.getZr().on('click', function (params) {
+            var pointInPixel = [params.offsetX, params.offsetY];
+            if (myChart.containPixel('grid', pointInPixel)) {
+                var pointInGrid = myChart.convertFromPixel({ seriesIndex: 0 }, pointInPixel);
+                var dataIndex = Math.round(pointInGrid[0]);
+
+                if (tooltipVisible) {
+                    myChart.dispatchAction({
+                        type: 'hideTip'
+                    });
+                    tooltipVisible = false;
+                } else {
+                    myChart.dispatchAction({
+                        type: 'showTip',
+                        seriesIndex: 0,
+                        dataIndex: dataIndex
+                    });
+                    tooltipVisible = true;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

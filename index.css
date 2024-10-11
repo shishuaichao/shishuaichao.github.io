@@ -239,7 +239,7 @@ body {
 .open_game {
   font-size: 40px;
   position: fixed;
-  top: 30%;
+  top: 30%; 
   width: 80%;
   left: 10%;
   box-sizing: border-box;
