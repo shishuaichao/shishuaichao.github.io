@@ -144,7 +144,7 @@
           tax = (sumNum - level4) * level5Rate - taxPaid.value + level4TaxAll
         }
         taxPaid.value += tax
-        resultStr.value += ` <span style="color: green">税后：${(salary - socialInsurance.value - tax).toFixed(2)}</span>  <span style="color: blue">应纳税：${tax}</span><br></div>`
+        resultStr.value += ` <span style="color: green">税后：${(salary - socialInsurance.value - tax).toFixed(2)}</span>  <span style="color: blue">应纳税：${tax.toFixed(2)}</span><br></div>`
       }
       
       // 计算
@@ -167,7 +167,8 @@
             taxAmount = 0
           }
           sumTaxAmount += taxAmount
-          resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
+          // resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
+          resultStr.value += `<div class="res_line">第${i+1}个月`
           calcTax(sumTaxAmount, currentMonthSalary)
         }
         resultStr.value += `总纳税额：${taxPaid.value}`
