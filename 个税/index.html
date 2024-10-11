@@ -66,8 +66,11 @@
       <div><label for="5">赡养老人抵扣：</label><input id="5"  type="checkbox" v-model="parentDeduction"></div>
       <div><label for="6">继续教育抵扣：</label><input id="6"  type="checkbox" v-model="adultEducation"></div>
       <div class="items">
-        <span style="color: red">个人所得税是按工资实际发放的时间来确定纳税月份的，而不是按劳动发生的时间。因此，虽然12月的工资是对上一年的劳动报酬，但由于发放时间在次年1月，所以它算作次年1月的收入，按照当年的税率和扣除项进行计算。
-          （0月就是上一年12月）</span>
+        <div>
+          <span style="color: red">个人所得税是按工资实际发放的时间来确定纳税月份的，而不是按劳动发生的时间。因此，虽然12月的工资是对上一年的劳动报酬，但由于发放时间在次年1月，所以它算作次年1月的收入，按照当年的税率和扣除项进行计算。
+            （0月就是上一年12月）</span>
+          <div>包含加班费的工资：</div>
+        </div>
         <div class="item" v-for="(item, key) in 12" :key="key">
           <label :for="key+100">{{key}}月份工资：</label> <input :id="key+100"  type="number" v-model="salaryArr[key]">
         </div>
