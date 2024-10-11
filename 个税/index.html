@@ -158,8 +158,10 @@
         resultStr.value = ''
         taxPaid.value = 0
         let sumTaxAmount = 0
+        let sumSalary = 0
         for(let i = 0; i < num; i++) {
           let currentMonthSalary = salaryArr.value[i] || baseSalary.value
+          sumSalary += currentMonthSalary
           let taxAmount = currentMonthSalary - socialInsurance.value
                                             - beginPoint.value
                                             - (houseRent.value ? houseRentLimit.value : 0)
@@ -171,10 +173,14 @@
           }
           sumTaxAmount += taxAmount
           resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount.toFixed(2)} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
-          // resultStr.value += `<div class="res_line">第${i+1}个月`
           calcTax(sumTaxAmount, currentMonthSalary)
         }
-        resultStr.value += `总纳税额：${taxPaid.value}`
+        resultStr.value += `
+          税前总收入：${sumSalary.toFixed(2)}<br>
+          总缴纳社保：${(socialInsurance.value*12).toFixed(2)}<br>
+          总纳税额：${taxPaid.value.toFixed(2)}<br>
+          税后总收入：${(sumSalary - socialInsurance.value*12 - taxPaid.value).toFixed(2)}<br>
+        `
       }
 
       const currentMonth = ref(12)
