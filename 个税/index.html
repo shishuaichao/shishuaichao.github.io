@@ -66,8 +66,10 @@
       <div><label for="5">赡养老人抵扣：</label><input id="5"  type="checkbox" v-model="parentDeduction"></div>
       <div><label for="6">继续教育抵扣：</label><input id="6"  type="checkbox" v-model="adultEducation"></div>
       <div class="items">
+        <span style="color: red">个人所得税是按工资实际发放的时间来确定纳税月份的，而不是按劳动发生的时间。因此，虽然12月的工资是对上一年的劳动报酬，但由于发放时间在次年1月，所以它算作次年1月的收入，按照当年的税率和扣除项进行计算。
+          （0月就是上一年12月）</span>
         <div class="item" v-for="(item, key) in 12" :key="key">
-          <label :for="key+100">{{key+1}}月工资：</label> <input :id="key+100"  type="number" v-model="salaryArr[key]">
+          <label :for="key+100">{{key}}月份工资：</label> <input :id="key+100"  type="number" v-model="salaryArr[key]">
         </div>
       </div>
       <!-- <div>计算前几个月：<input type="number" v-model="currentMonth"></div> -->
@@ -77,6 +79,7 @@
     <div class="result" v-html="resultStr"></div>
   </div>
 </body>
+<script src="../vue.js"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
 
@@ -84,10 +87,10 @@
 
   createApp({
     setup() {
-      const baseSalary = ref(5000)   // 基础工资
+      const baseSalary = ref(10000)   // 基础工资
       const beginPoint = ref(5000)  // 起征点
 
-      const socialInsurance = ref(1000)  // 五险一金
+      const socialInsurance = ref(1278.55)  // 五险一金
       const houseRent = ref(true)   // 租房
       const houseRentLimit = ref(1500)   // 租房抵扣
       const childrenDeduction = ref(false)  // 小孩
@@ -167,8 +170,8 @@
             taxAmount = 0
           }
           sumTaxAmount += taxAmount
-          // resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
-          resultStr.value += `<div class="res_line">第${i+1}个月`
+          resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount.toFixed(2)} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
+          // resultStr.value += `<div class="res_line">第${i+1}个月`
           calcTax(sumTaxAmount, currentMonthSalary)
         }
         resultStr.value += `总纳税额：${taxPaid.value}`
