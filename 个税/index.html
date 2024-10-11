@@ -6,7 +6,7 @@
   <title>个税</title>
   <style>
     #app {
-      font-size: 20px;
+      font-size: 18px;
       padding: 30px 100px;
     }
     label {
@@ -32,42 +32,49 @@
       height: 30px;
       font-size: 20px;
     }
+    .items {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .item {
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    .item label {
+      display: inline-block;
+      width: 110px;
+    }
+    .res_line {
+      margin-bottom: 10px;
+    }
+    @media screen and (max-width: 600px) {
+      #app {
+        font-size: 16px;
+        padding: 30px 10px;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="app">
     <h1>个税计算器</h1>
     <div class="form">
-      <div>基础薪资：<input type="number" v-model="baseSalary"></div>
-      <!-- <div>起征点点：<input type="number" v-model="beginPoint" disabled></div> -->
-      <div>五险一金：<input type="number" v-model="socialInsurance"></div>
+      <div class="item"><label for="1">基础薪资：</label> <input id="1" type="number" v-model="baseSalary"></div>
+      <div class="item"><label for="2">五险一金：</label> <input id="2" type="number" v-model="socialInsurance"></div>
       <div><label for="3">租&nbsp;&nbsp;房&nbsp;&nbsp;抵&nbsp;&nbsp;扣：</label><input id="3"  type="checkbox" v-model="houseRent"></div>
       <div><label for="4">抚养小孩抵扣：</label><input id="4" type="checkbox" v-model="childrenDeduction"></div>
       <div><label for="5">赡养老人抵扣：</label><input id="5"  type="checkbox" v-model="parentDeduction"></div>
       <div><label for="6">继续教育抵扣：</label><input id="6"  type="checkbox" v-model="adultEducation"></div>
-      <div>
-        <label for="00">一月工资：</label> <input id="00"  type="number" v-model="salaryArr[0]"> &nbsp;
-        <label for="01">二月工资：</label> <input id="01"  type="number" v-model="salaryArr[1]"> &nbsp;
-        <label for="02">三月工资：</label> <input id="02"  type="number" v-model="salaryArr[2]"> &nbsp;
-        <br>
-        <label for="03">四月工资：</label> <input id="03"  type="number" v-model="salaryArr[3]"> &nbsp;
-        <label for="04">五月工资：</label> <input id="04"  type="number" v-model="salaryArr[4]"> &nbsp;
-        <label for="05">六月工资：</label> <input id="05"  type="number" v-model="salaryArr[5]"> &nbsp;
-        <br>
-        <label for="06">七月工资：</label> <input id="06"  type="number" v-model="salaryArr[6]"> &nbsp;
-        <label for="07">八月工资：</label> <input id="07"  type="number" v-model="salaryArr[7]"> &nbsp;
-        <label for="08">九月工资：</label> <input id="08"  type="number" v-model="salaryArr[8]"> &nbsp;
-        <br>
-        <label for="09">十月工资：</label> <input id="09"  type="number" v-model="salaryArr[9]"> &nbsp;
-        <label for="10">11&nbsp;月工资：</label> <input id="10"  type="number" v-model="salaryArr[10]"> &nbsp;
-        <label for="11">12月工资：</label> <input id="11"  type="number" v-model="salaryArr[11]"> &nbsp;
+      <div class="items">
+        <div class="item" v-for="(item, key) in 12" :key="key">
+          <label :for="key+100">{{key+1}}月工资：</label> <input :id="key+100"  type="number" v-model="salaryArr[key]">
+        </div>
       </div>
-      <br>
-      <div>计算前几个月：<input type="number" v-model="currentMonth"></div>
+      <!-- <div>计算前几个月：<input type="number" v-model="currentMonth"></div> -->
       <button @click="calc">计  算</button>
     </div>
     <hr>
-    <div v-html="resultStr"></div>
+    <div class="result" v-html="resultStr"></div>
   </div>
 </body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -137,7 +144,7 @@
           tax = (sumNum - level4) * level5Rate - taxPaid.value + level4TaxAll
         }
         taxPaid.value += tax
-        resultStr.value += ` <span style="color: green">税后：${(salary - socialInsurance.value - tax).toFixed(2)}</span>  <span style="color: blue">应纳税：${tax}</span><br>`
+        resultStr.value += ` <span style="color: green">税后：${(salary - socialInsurance.value - tax).toFixed(2)}</span>  <span style="color: blue">应纳税：${tax}</span><br></div>`
       }
       
       // 计算
@@ -160,7 +167,7 @@
             taxAmount = 0
           }
           sumTaxAmount += taxAmount
-          resultStr.value += `第${i+1}个月 累计应纳税所得额：${sumTaxAmount} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
+          resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
           calcTax(sumTaxAmount, currentMonthSalary)
         }
         resultStr.value += `总纳税额：${taxPaid.value}`
