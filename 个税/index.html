@@ -7,7 +7,7 @@
   <style>
     #app {
       font-size: 18px;
-      padding: 30px 100px;
+      padding: 30px 100px 100px;
       user-select: none;
     }
     label {
@@ -18,13 +18,7 @@
       width: 30px;
       height: 20px;
     }
-    button {
-      width: 200px;
-      height: 50px;
-      margin-top: 20px;
-      cursor: pointer;
-      font-size: 22px;
-    }
+    
     .form {
       line-height: 2em;
     } 
@@ -33,7 +27,7 @@
       height: 30px;
       font-size: 20px;
     }
-
+    
     .line div {
       display: flex;
       align-items: center;
@@ -63,13 +57,32 @@
       width: 600px;
       max-width: 100%;
     }
+    .calc {
+      display: grid;
+      align-items: center;
+      margin-top: 20px;
+      font-size: 22px;
+      grid-gap: 20px;
+      grid-template-columns: minmax(80px, 200px) minmax(220px, 1fr);
+    }
+    button {
+      height: 50px;
+      cursor: pointer;
+      font-size: 22px;
+    }
+    .form select {
+      width: 80px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 22px;
+    }
   </style>
 </head>
 <body>
   <div id="app">
     <h1>个税计算器</h1>
     <div class="form">
-      <div class="item"><label for="1">基础薪资：</label> <input id="1" type="number" v-model="baseSalary"></div>
+      <div class="item"><label for="1">税前工资：</label> <input id="1" type="number" v-model="baseSalary"></div>
       <div class="item"><label for="2">五险一金：</label> <input id="2" type="number" v-model="socialInsurance"></div>
       专项抵扣
       <div class="line">
@@ -94,11 +107,11 @@
         </div>
       </div>
       <div class="line">
-        <div><label for="cd1">子女教育：</label><input id="cd1" name="cd" type="checkbox" v-model="childrenEducation"></div>
+        <div><label for="ce">子女教育：</label><input id="cd1" name="ce" type="checkbox" v-model="childrenEducation"></div>
         <div v-if="childrenEducation">
-          <input id="cd1" name="child" type="radio" value="2000" v-model="childrenEducationLimit"> <label for="cd1">1个</label>&nbsp;&nbsp;
-          <input id="cd2" name="child" type="radio" value="4000" v-model="childrenEducationLimit"> <label for="cd2">2个</label>&nbsp;&nbsp;
-          <input id="cd3" name="child" type="radio" value="6000" v-model="childrenEducationLimit"> <label for="cd3">3个</label>&nbsp;&nbsp;
+          <input id="ce1" name="ce" type="radio" value="2000" v-model="childrenEducationLimit"> <label for="ce1">1个</label>&nbsp;&nbsp;
+          <input id="ce2" name="ce" type="radio" value="4000" v-model="childrenEducationLimit"> <label for="ce2">2个</label>&nbsp;&nbsp;
+          <input id="ce3" name="ce" type="radio" value="6000" v-model="childrenEducationLimit"> <label for="ce3">3个</label>&nbsp;&nbsp;
         </div>
       </div>
       <div class="line">
@@ -114,20 +127,41 @@
         <div><label for="6">继续教育：</label><input id="6"  type="checkbox" v-model="adultEducation"></div>
         <div v-if="adultEducation">
           <input id="a1" name="adult" type="radio" value="400" v-model="adultEducationLimit"> <label for="a1">400/月</label>&nbsp;&nbsp;
-          <input id="a2" name="adult" type="radio" value="300" v-model="adultEducationLimit"> <label for="a2">3600/年</label>&nbsp;&nbsp;
+          <input id="a2" name="adult" type="radio" value="3600" v-model="adultEducationLimit"> <label for="a2">3600/年</label>&nbsp;&nbsp;
         </div>
       </div>
+      <div class="item"><label for="medical">大病医疗：</label><input id="medical" type="number" v-model="medicalFee"></div>
       <div class="items">
         <div>
           <span style="color: red">个人所得税是按工资实际发放的时间来确定纳税月份的，而不是按劳动发生的时间。因此，虽然12月的工资是对上一年的劳动报酬，但由于发放时间在次年1月，所以它算作次年1月的收入，按照当年的税率和扣除项进行计算。
             （0月就是上一年12月）</span>
-          <div>包含加班费的工资：</div>
+          <div>包含加班费的工资（当月应发工资）：</div>
         </div>
         <div class="item" v-for="(item, key) in 12" :key="key">
           <label :for="key+100">{{key}}月份工资：</label> <input :id="key+100"  type="number" v-model="salaryArr[key]">
         </div>
       </div>
-      <button @click="calc">计  算</button>
+      <div class="calc">
+        <button @click="calc">计  算</button>
+        <div>
+          前  
+          <select name="" v-model="currentMonth">
+            <option :value="1">1</option>
+            <option :value="2">2</option>
+            <option :value="3">3</option>
+            <option :value="4">4</option>
+            <option :value="5">5</option>
+            <option :value="6">6</option>
+            <option :value="7">7</option>
+            <option :value="8">8</option>
+            <option :value="9">9</option>
+            <option :value="10">10</option>
+            <option :value="11">11</option>
+            <option :value="12">12</option>
+          </select> 
+          个月的
+        </div>
+      </div>
     </div>
     <hr>
     <div class="result" v-html="resultStr"></div>
@@ -148,6 +182,8 @@
       const socialInsurance = ref(1278.55)  // 五险一金
       const houseRent = ref(false)   // 租房
       const houseRentLimit = ref(1500)   // 租房抵扣
+      const houseCredit = ref(false)  // 房贷
+      const houseCreditLimit = ref(1000)  // 房贷抵扣
       const childrenDeduction = ref(false)  // 小孩
       const childrenDeductionLimit = ref(2000)  // 小孩抵扣
       const childrenEducation = ref(false)  // 子女教育
@@ -156,6 +192,7 @@
       const parentDeductionLimit = ref(1500)  // 老人抵扣
       const adultEducation = ref(false)  // 继续教育
       const adultEducationLimit = ref(400)  // 继续教育抵扣
+      const medicalFee = ref(0)  // 大病医疗  
 
       const level1 = 36000
       const level1Rate = 0.03
@@ -193,10 +230,13 @@
       })
 
       watch(houseRent, e => {
-        console.log(e)
+        e && (houseCredit.value = !e)
+      })
+
+      watch(houseCredit, e => {
+        e && (houseRent.value = !e)
       })
       
-
       const taxPaid = ref(0)
       const calcTax = (sumNum, salary) => {
         let tax = 0
@@ -228,23 +268,30 @@
         }
         resultStr.value = ''
         taxPaid.value = 0
-        let sumTaxAmount = 0
+        let sumTaxAmount = 0   // 应纳税所得额
+        if (medicalFee.value) {
+          sumTaxAmount -= medicalFee.value
+        }  
+        if (adultEducation.value && adultEducationLimit.value != 400) {
+          sumTaxAmount -= adultEducationLimit.value
+        }
         let sumSalary = 0
         for(let i = 0; i < num; i++) {
           let currentMonthSalary = salaryArr.value[i] || baseSalary.value
           sumSalary += currentMonthSalary
           let taxAmount = currentMonthSalary - socialInsurance.value
-                                            - beginPoint.value
+                                            - beginPoint.value   
                                             - (houseRent.value ? houseRentLimit.value : 0)
+                                            - (houseCredit.value ? houseCreditLimit.value : 0)
                                             - (childrenDeduction.value ? childrenDeductionLimit.value : 0)
                                             - (childrenEducation.value ? childrenEducationLimit.value : 0)
                                             - (parentDeduction.value ? parentDeductionLimit.value : 0)
-                                            - (adultEducation.value ? adultEducationLimit.value : 0)
+                                            - (adultEducation.value && adultEducationLimit.value == 400 ? adultEducationLimit.value : 0)
           if (taxAmount <= 0) {
             taxAmount = 0
           }
           sumTaxAmount += taxAmount
-          resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount.toFixed(2)} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
+          resultStr.value += `<div class="res_line">第${i+1}个月 累计应纳税所得额：${sumTaxAmount>0 ? sumTaxAmount.toFixed(2) : 0} <span style="color: red">税前：${currentMonthSalary.toFixed(2)}</span>`
           calcTax(sumTaxAmount, currentMonthSalary)
         }
         resultStr.value += `
@@ -271,6 +318,8 @@
 
         houseRent,
         houseRentLimit,
+        houseCredit,
+        houseCreditLimit,
         childrenDeduction,
         childrenDeductionLimit,
         childrenEducation,
@@ -279,6 +328,7 @@
         parentDeductionLimit,
         adultEducation,
         adultEducationLimit,
+        medicalFee,
 
         resultStr,
         currentMonth,
