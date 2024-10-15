@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyrics Sync with Audio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .lyrics {
+            font-size: 24px;
+            font-weight: bold;
+            color: #666;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .lyrics span {
+            color: #666; /* 初始颜色：灰色 */
+            transition: color 0.3s ease; /* 平滑过渡效果 */
+        }
+
+        .highlight {
+            color: #1DB954; /* 高亮颜色：绿色，类似QQ音乐 */
+        }
+
+        audio {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 歌词部分 -->
+    <div class="lyrics" id="lyrics">
+        <span data-time="1">Y</span><span data-time="1.2">o</span><span data-time="1.4">u</span> 
+        <span data-time="1.6">r</span> <span data-time="1.8">l</span><span data-time="2.0">y</span>
+        <span data-time="2.2">r</span><span data-time="2.4">i</span><span data-time="2.6">c</span>
+        <span data-time="2.8">s</span> <span data-time="3.0">g</span><span data-time="3.2">o</span> 
+        <span data-time="3.4">h</span><span data-time="3.6">e</span><span data-time="3.8">r</span><span data-time="4.0">e</span>.
+    </div>
+
+    <!-- 音频控制 -->
+    <audio id="audio" controls>
+        <source src="your-audio-file.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const lyricsSpans = document.querySelectorAll('.lyrics span');
+
+        // 当音频播放时更新歌词颜色
+        audio.addEventListener('timeupdate', () => {
+            const currentTime = audio.currentTime;
+
+            // 遍历每个歌词的字，根据时间戳判断是否需要变色
+            lyricsSpans.forEach(span => {
+                const spanTime = parseFloat(span.getAttribute('data-time'));
+                
+                if (currentTime >= spanTime) {
+                    span.classList.add('highlight'); // 到时间变色
+                } else {
+                    span.classList.remove('highlight'); // 如果还没到时间，恢复原色
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text with Background Image</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* background-color: #f0f0f0; */
+            margin: 0;
+        }
+
+        .text-background {
+            font-size: 72px;
+            font-weight: bold;
+            background-image: url('https://emoji.bj.bcebos.com/yige-aigc/index_aigc/final/toolspics/3.png'); /* 替换为实际图片路径 */
+            background-size: cover; /* 让图片覆盖文字区域 */
+            background-clip: text; /* 将图片裁剪为文字的形状 */
+            -webkit-background-clip: text; /* 针对Webkit内核的浏览器 */
+            color: transparent; /* 让文字的颜色透明 */
+            -webkit-text-fill-color: transparent; /* 确保文字本身不显示颜色，显示背景 */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-background">
+        Your Text
+    </div>
+
+</body>
+</html>
